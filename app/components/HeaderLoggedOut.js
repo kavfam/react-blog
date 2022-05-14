@@ -10,21 +10,26 @@ function HeaderLoggedOut(props) {
   async function handleSubmit(e) {
     // console.log("handleSubmit");
     e.preventDefault();
-    try {
-      const response = await Axios.post("/login", { username, password });
+    // if either username or password is blank do not send axios request
+    if (username.length == 0 || password.length == 0) {
+      // change border color
+      appDispatch({ type: "flashMessage", value: "You can not have a blank username or password!!!", col: "danger" });
+      console.log("Username or password cant be empty!!!");
+    } else {
+      try {
+        const response = await Axios.post("/login", { username, password });
 
-      if (response.data) {
-        //console.log("response.data", response.data);
-        //console.log("loggedIn", state.loggedIn);
-        // first parameter is name to store piece of data given in second parameter
-        appDispatch({ type: "login", data: response.data });
-        appDispatch({ type: "flashMessage", value: "You have successfully logged in!" });
-      } else {
-        console.log("Incorrect Username/password");
-        appDispatch({ type: "flashMessage", value: "Invalid username or password. Sign in unsuccessful." });
+        if (response.data) {
+          // first parameter is name to store piece of data given in second parameter
+          appDispatch({ type: "login", data: response.data });
+          appDispatch({ type: "flashMessage", value: "You have successfully logged in!" });
+        } else {
+          console.log("Incorrect Username/password");
+          appDispatch({ type: "flashMessage", value: "Invalid username or password. Sign in unsuccessful." });
+        }
+      } catch (e) {
+        console.log("There was a problem.");
       }
-    } catch (e) {
-      console.log("There was a problem.");
     }
   }
 
@@ -32,10 +37,10 @@ function HeaderLoggedOut(props) {
     <form onSubmit={handleSubmit} className="mb-0 pt-2 pt-md-0">
       <div className="row align-items-center">
         <div className="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-          <input onChange={e => setUsername(e.target.value)} name="username" className="form-control form-control-sm input-dark" type="text" placeholder="Username" autoComplete="off" />
+          <input onChange={e => setUsername(e.target.value)} name="username" className={`form-control form-control-sm input-dark ${username == "" ? "is-invalid" : ""}`} type="text" placeholder="Username" autoComplete="off" />
         </div>
         <div className="col-md mr-0 pr-md-0 mb-3 mb-md-0">
-          <input onChange={e => setPassword(e.target.value)} name="password" className="form-control form-control-sm input-dark" type="password" placeholder="Password" />
+          <input onChange={e => setPassword(e.target.value)} name="password" className={`form-control form-control-sm input-dark ${password == "" ? "is-invalid" : ""}`} type="password" placeholder="Password" />
         </div>
         <div className="col-md-auto">
           <button className="btn btn-success btn-sm">Sign In</button>

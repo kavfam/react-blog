@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 
-function Flash2(msg) {
+function Flash2(msg, col) {
   return (
     <div className="floating-alerts">
-      <div key={1} className="alert alert-success text-center floating-alert shadow-sm">
+      <div key={1} className={`alert text-center floating-alert shadow-sm ${col === "danger" ? "alert-danger" : "alert-success"}`}>
         {msg}
       </div>
     </div>

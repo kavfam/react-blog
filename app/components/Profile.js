@@ -31,9 +31,13 @@ function Profile() {
       try {
         const response = await Axios.post(`/profile/${username}`, { token: appState.user.token }, { cancelToken: ourRequest.token });
         //console.log(response.data);
-        setState(draft => {
-          draft.profileData = response.data;
-        });
+        if (response.data) {
+          setState(draft => {
+            draft.profileData = response.data;
+          });
+        } else {
+          dispatch({ type: "notFound" });
+        }
       } catch (e) {
         console.log("There was a problem or the request was cancelled.");
       }

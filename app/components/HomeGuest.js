@@ -5,9 +5,6 @@ import { useImmerReducer } from "use-immer";
 import { CSSTransition } from "react-transition-group";
 
 function HomeGuest() {
-  // const [username, setUsername] = useState();
-  // const [email, setEmail] = useState();
-  // const [password, setPassword] = useState();
   const initialState = {
     username: {
       value: "",
@@ -49,11 +46,6 @@ function HomeGuest() {
         return;
 
       case "usernameAfterDelay":
-        // if (draft.username.value.length < 3) {
-        //   draft.username.hasErrors = true;
-        //   draft.username.message = "Username must have at least 3 characters.";
-        // }
-        // return;
         if (du.value.length < 3) {
           du.hasErrors = true;
           du.message = "Username must have at least 3 characters.";
@@ -110,13 +102,16 @@ function HomeGuest() {
         return;
 
       case "passwordAfterDelay":
-        if (draft.password.value.length < 12) {
+        if (draft.password.value.length < 8) {
           draft.password.hasErrors = true;
-          draft.password.message = "Password must be at least 12 characters!";
+          draft.password.message = "Password must be at least 8 characters!";
         }
         return;
 
       case "submitForm":
+        if (!draft.username.hasErrors && draft.username.isUnique && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors) {
+          draft.submitCount++;
+        }
         return;
     }
   }
@@ -185,26 +180,40 @@ function HomeGuest() {
     }
   }, [state.email.checkCount]);
 
+  useEffect(() => {
+    if (state.submitCount) {
+      const ourRequest = Axios.CancelToken.source();
+      async function fetchResults() {
+        try {
+          const response = await Axios.post("/register", { username: state.username.value, email: state.email.value, password: state.password.value }, { cancelToken: ourRequest.token });
+          appDispatch({ type: "login", data: response.data });
+          appDispatch({ type: "flashMessage", value: "Congrats! Welcome to your new account." });
+        } catch (e) {
+          console.log("There was a problem or the request was cancelled.");
+        }
+      }
+      fetchResults();
+      return () => ourRequest.cancel();
+    }
+  }, [state.submitCount]);
+
   function handleSubmit(e) {
     e.preventDefault();
-    // try {
-    //   await Axios.post("/register", {
-    //     username,
-    //     email,
-    //     password
-    //   });
-    //   console.log("User was successfully created.");
-    // } catch (e) {
-    //   console.log("Sign up problem!");
-    //   console.log(e.response.data);
-    // }
+    dispatch({ type: "usernameImmediately", value: state.username.value });
+    dispatch({ type: "usernameAfterDelay", value: state.username.value, noRequest: true });
+    dispatch({ type: "emailImmediately", value: state.email.value });
+    dispatch({ type: "emailAfterDelay", value: state.email.value, noRequest: true });
+    dispatch({ type: "passwordImmediately", value: state.password.value });
+    dispatch({ type: "passwordAfterDelay", value: state.password.value });
+    dispatch({ type: "submitForm" });
   }
+
   return (
-    <Page title="Home Page" wide={true}>
+    <Page title="Welcome!" wide={true}>
       <div className="row align-items-center">
         <div className="col-lg-7 py-3 py-md-5">
-          <h1 className="display-3">Remember Writing?</h1>
-          <p className="lead text-muted">Are you sick of short tweets and impersonal &ldquo;shared&rdquo; posts that are reminiscent of the late 90&rsquo;s email forwards? We believe getting back to actually writing is the key to enjoying the internet again.</p>
+          <h1 className="display-3">Remember Anything?</h1>
+          <p className="lead text-muted">Are you tired of trying to find all those cheatsheets you have all over the place and those VIP how-to notes? Well, now you can keep them all in one easy to access place - right here!</p>
         </div>
         <div className="col-lg-5 pl-lg-5 pb-3 py-lg-5">
           <form onSubmit={handleSubmit}>
@@ -236,7 +245,7 @@ function HomeGuest() {
               </CSSTransition>
             </div>
             <button type="submit" className="py-3 mt-4 btn btn-lg btn-success btn-block">
-              Sign up for ComplexApp
+              Sign up for CodeApp...its FREE!
             </button>
           </form>
         </div>
