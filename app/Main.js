@@ -33,9 +33,6 @@ const Search = React.lazy(() => import("./components/Search"));
 //import Chat from "./components/Chat";
 const Chat = React.lazy(() => import("./components/Chat"));
 
-//  myimports = [Header, HomeGuest, Home, Footer, About, Terms, CreatePost, ViewSinglePost, FlashMessage, Profile, EditPost, NotFound, Search]
-//  myimports.map( imp => {import imp from "./components/imp"})
-
 function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("complexappToken")),
@@ -118,7 +115,7 @@ function Main() {
           //console.log(response.data);
           if (!response.data) {
             dispatch({ type: "logout" });
-            dispatch({ type: "flashMessage", value: "Your session has expired. Please log in again!" });
+            dispatch({ type: "flashMessage", value: { warntype: "warning", message: "Your session has expired. Please log in again!" } });
           }
         } catch (e) {
           console.log("There was a problem or the request was cancelled.");

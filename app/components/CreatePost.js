@@ -16,14 +16,14 @@ function CreatePost(props) {
     e.preventDefault();
     try {
       const response = await Axios.post("/create-post", { title, body, token: appState.user.token });
-      // Redirect to new post url
-      appDispatch({ type: "flashMessage", value: "Congrats you successfully created a post." });
+      appDispatch({ type: "flashMessage", value: { warntype: "success", message: "Congrats you successfully created a post." } });
 
+      // Redirect to new post url
       navigate(`/post/${response.data}`);
 
-      console.log("New post was created.");
+      //console.log("New post was created.");
     } catch (e) {
-      console.log("There was a problem.");
+      //console.log("There was a problem.");
     }
   }
 

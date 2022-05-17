@@ -5,9 +5,9 @@ function About() {
   return (
     <Page title="About Us">
       <h2>About Us</h2>
-      <p className="lead text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis dolorum labore quisquam vel id dicta fuga! Ducimus, quo. Dolore commodi aliquid error veritatis consequuntur, excepturi cumque fuga eum incidunt doloremque?</p>
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. At qui enim rem totam voluptatum. Aut saepe temporibus, facilis ex a iste expedita minima dolorum dicta doloribus libero aliquid, quae maxime? Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat suscipit beatae eum, est soluta ducimus ratione et impedit sapiente, nihil, atque dignissimos adipisci? Totam atque officia quis voluptates sed veniam?</p>
-      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita voluptates quisquam possimus tenetur, dicta enim rerum quis, quaerat id nobis provident quo dolorum sapiente temporibus facere non repellendus consequatur cupiditate!</p>
+      <p className="lead text-muted">CodeApp was created from a greate course by Brad Shiff. Essentially a blog so I figured I would use this to save info on difference courses.</p>
+      <p>Could probably add something whereby users could add their own ratings/ comments. Will see.. </p>
+      <p>For now, its up and running on the web. Frontend hosted on Netlify and backend on Heroku with database on Mongodb/cloud.</p>
     </Page>
   );
 }

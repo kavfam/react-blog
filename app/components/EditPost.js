@@ -75,7 +75,7 @@ function EditPost() {
     }
   }
 
-  // useImmerRedducer params: first = fn that serves as reducer, 2md is prev/original state
+  // useImmerRedducer params: a = fn that serves as reducer, b = prev/original state
   const [state, dispatch] = useImmerReducer(ourReducer, originalState);
 
   function submitHandler(e) {
@@ -94,7 +94,7 @@ function EditPost() {
         if (response.data) {
           dispatch({ type: "fetchComplete", value: response.data });
           if (appState.user.username != response.data.author.username) {
-            appDispatch({ type: "flashmessage", value: "You do not have permission to edit that post!" });
+            appDispatch({ type: "flashmessage", value: { warntype: "danger", message: "You do not have permission to edit that post!" } });
             // redirect to home page
             navigate("/");
           }
@@ -119,9 +119,8 @@ function EditPost() {
         try {
           const response = await Axios.post(`/post/${state.id}/edit`, { title: state.title.value, body: state.body.value, token: appState.user.token }, { cancelToken: ourRequest.token });
           //console.log(response.data);
-          // dispatch({ type: "fetchComplete", value: response.data });
           dispatch({ type: "saveRequestFinished" });
-          appDispatch({ type: "flashMessage", value: "Post was updated." });
+          appDispatch({ type: "flashMessage", value: { warntype: "success", message: "Post was updated." } });
         } catch (e) {
           console.log("There was a problem or the request was cancelled.");
         }

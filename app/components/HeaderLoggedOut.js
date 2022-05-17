@@ -13,8 +13,8 @@ function HeaderLoggedOut(props) {
     // if either username or password is blank do not send axios request
     if (username.length == 0 || password.length == 0) {
       // change border color
-      appDispatch({ type: "flashMessage", value: "You can not have a blank username or password!!!", col: "danger" });
-      console.log("Username or password cant be empty!!!");
+      appDispatch({ type: "flashMessage", value: { warntype: "info", message: "You can not have a blank username or password!!!" } });
+      //console.log("Username or password cant be empty!!!");
     } else {
       try {
         const response = await Axios.post("/login", { username, password });
@@ -22,10 +22,10 @@ function HeaderLoggedOut(props) {
         if (response.data) {
           // first parameter is name to store piece of data given in second parameter
           appDispatch({ type: "login", data: response.data });
-          appDispatch({ type: "flashMessage", value: "You have successfully logged in!" });
+          appDispatch({ type: "flashMessage", value: { warntype: "success", message: "You have successfully logged in!" } });
         } else {
           console.log("Incorrect Username/password");
-          appDispatch({ type: "flashMessage", value: "Invalid username or password. Sign in unsuccessful." });
+          appDispatch({ type: "flashMessage", value: { warntype: "warning", message: "Invalid username or password. Sign in unsuccessful." } });
         }
       } catch (e) {
         console.log("There was a problem.");

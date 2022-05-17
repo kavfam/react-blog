@@ -13,7 +13,7 @@ function HeaderLoggedIn(props) {
     navigate("/");
     appDispatch({ type: "closeChat" });
     appDispatch({ type: "logout" });
-    appDispatch({ type: "flashMessage", value: "You have successfully logged out!" });
+    appDispatch({ type: "flashMessage", value: { warntype: "success", message: "You have successfully logged out!" } });
   }
 
   function handleSearchIcon(e) {
